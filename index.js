@@ -123,7 +123,8 @@ class GooglePlaceAutocomplete extends Component {
     }
 
     _handlePressPrediction = (prediction) => {
-        console.log(prediction)
+        console.log(prediction);
+        this.props.onResult(prediction);
 //         // Get more detail about the place
 //         this._request('/place/details', {
 //             placeid: prediction.place_id
