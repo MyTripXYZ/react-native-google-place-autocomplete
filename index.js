@@ -157,6 +157,7 @@ class GooglePlaceAutocomplete extends Component {
 
         var params = {}
         params.q = input
+        params.limit = 5
 
         return axios({
             url: `api`,
