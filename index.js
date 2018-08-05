@@ -97,21 +97,10 @@ class GooglePlaceAutocomplete extends Component {
     _handleChangeTextSettle = () => {
         if (this.state.value.length > 0) {
             // Get predictions
-            this._request('/place/autocomplete', {
-                input: this.state.value
-            })
+            this._getPredictions(this.state.value)
             .then(response => {
                 if (response && response.data) {
-                    switch (response.data.status) {
-                        case 'OK':
-                        case 'ZERO_RESULTS':
-                            this._predictions(response.data.predictions);
-                            break;
-
-                        default:
-                            console.error('Request Error:', response.data.error_message || response.data.status);
-                            break;
-                    }
+                       this._predictions(response.data.features);
                 }
             })
             .catch(error => {
@@ -134,44 +123,46 @@ class GooglePlaceAutocomplete extends Component {
     }
 
     _handlePressPrediction = (prediction) => {
-        // Get more detail about the place
-        this._request('/place/details', {
-            placeid: prediction.place_id
-        })
-        .then(response => {
-            if (response && response.data) {
-                if (response.data.status === 'OK') {
-                    const {result} = response.data;
+        console.log(prediction)
+//         // Get more detail about the place
+//         this._request('/place/details', {
+//             placeid: prediction.place_id
+//         })
+//         .then(response => {
+//             if (response && response.data) {
+//                 if (response.data.status === 'OK') {
+//                     const {result} = response.data;
 
-                    // Fire event
-                    if (this.props.onResult) {
-                        this.setState({
-                          predictions:[],
-                        });
-                        this.props.onResult(result);
-                    }
-                } else {
-                    console.error('Request Error:', response.data.error_message || response.data.status);
-                }
-            }
+//                     // Fire event
+//                     if (this.props.onResult) {
+//                         this.setState({
+//                           predictions:[],
+//                         });
+//                         this.props.onResult(result);
+//                     }
+//                 } else {
+//                     console.error('Request Error:', response.data.error_message || response.data.status);
+//                 }
+//             }
         })
         .catch(error => {
             console.log('error', error);
         });
     }
 
-    _request = (url, params) => {
+    _getPredictions = (input) => {
         // Cancel any other requests
         this._cancelTokenSource.cancel('The "clean slate" protocol');
         this._cancelTokenSource = CancelToken.source();
 
-        params.key = this.props.googleAPIKey;
+        var params = {}
+        params.q = input
 
         return axios({
-            url: `${url}/json`,
+            url: `api`,
             method: 'get',
-            baseURL: 'https://maps.googleapis.com/maps/api',
-            params,
+            baseURL: 'http://photon.komoot.de',
+            params: ,
             cancelToken: this._cancelTokenSource.token
         })
         .catch(error => {
