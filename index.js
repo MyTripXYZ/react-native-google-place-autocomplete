@@ -162,7 +162,7 @@ class GooglePlaceAutocomplete extends Component {
             url: `api`,
             method: 'get',
             baseURL: 'http://photon.komoot.de',
-            params: ,
+            params,
             cancelToken: this._cancelTokenSource.token
         })
         .catch(error => {
