@@ -144,10 +144,10 @@ class GooglePlaceAutocomplete extends Component {
 //                     console.error('Request Error:', response.data.error_message || response.data.status);
 //                 }
 //             }
-        })
-        .catch(error => {
-            console.log('error', error);
-        });
+//         })
+//         .catch(error => {
+//             console.log('error', error);
+//         });
     }
 
     _getPredictions = (input) => {
